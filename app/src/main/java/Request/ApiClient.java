@@ -49,7 +49,7 @@ public class ApiClient {
         String mailLogin = sp.getString("mail","-1");
         String claveLogin = sp.getString("clave","-1");
 
-        if(mail.equals(mail) && password.equals(claveLogin)){
+        if(mail.equals(mailLogin) && password.equals(claveLogin)){
             usuarioLogin = new Usuario(nombreLogin,apellidoLogin,dniLogin,mailLogin,claveLogin);
         }
         return usuarioLogin;

@@ -20,7 +20,6 @@ public class LoginActivityViewModel extends AndroidViewModel {
     private Context context;
     private ApiClient apiClient;
     private MutableLiveData<Boolean> loginSuccess = new MutableLiveData<>(false);
-    private MutableLiveData<Usuario> dataUsuarioMutable;
 
     public LoginActivityViewModel(@NonNull Application application) {
         super(application);
@@ -32,41 +31,22 @@ public class LoginActivityViewModel extends AndroidViewModel {
         loginSuccess = new MutableLiveData<>();
         return loginSuccess;
     }
-    public LiveData<Usuario> getDataUsuarioMutable() {
-        if (dataUsuarioMutable == null) {
-            dataUsuarioMutable = new MutableLiveData<>();
-        }
-        return dataUsuarioMutable;
-    }
-
 
     public void confirmarLogin(String mail, String clave) {
         if(mail.length() == 0 || clave.length() == 0){
             Toast.makeText(context, "Credenciales erroneas", Toast.LENGTH_SHORT).show();
+            loginSuccess.setValue(false);
         }
         else{
             Usuario usuario = apiClient.login(context,mail,clave);
-            loginSuccess.setValue(usuario != null ? true : false);
-        }
-
-    }
-
-    public void leerDatos(Intent intent) {
-        Bundle bundle = intent.getExtras();
-        boolean loguin = (boolean) bundle.getSerializable("loguin");
-        if(loguin != false) {
-            Usuario usuario = apiClient.leer(context);
-            if (usuario != null) {
-                dataUsuarioMutable.setValue(usuario);
-            } else {
+            if(usuario != null){
+                loginSuccess.setValue(usuario != null ? true : false);
+            }
+            else{
                 Toast.makeText(context, "Credenciales erroneas", Toast.LENGTH_SHORT).show();
             }
         }
-        else{
-            dataUsuarioMutable.setValue(new Usuario("","",0,"",""));
-        }
+
     }
-
-
 
 }

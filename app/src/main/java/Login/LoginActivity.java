@@ -23,7 +23,6 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         mv = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(LoginActivityViewModel.class);
 
-
         binding.btnIniciarSesion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -34,7 +33,6 @@ public class LoginActivity extends AppCompatActivity {
         binding.btnIrARegistrarse.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("loguin", false);
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -47,7 +45,6 @@ public class LoginActivity extends AppCompatActivity {
         mv.getLoginSuccess().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean loginSuccess) {
-                if (loginSuccess) {
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("loguin", true);
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -55,7 +52,6 @@ public class LoginActivity extends AppCompatActivity {
                     intent.putExtras(bundle);
                     startActivity(intent);
                     finish();
-                }
             }
         });
     }

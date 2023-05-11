@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         loginViewModel = ViewModelProvider.AndroidViewModelFactory.getInstance(getApplication()).create(LoginActivityViewModel.class);
 
 
-        loginViewModel.getDataUsuarioMutable().observe(this, new Observer<Usuario>() {
+        mv.getDataUsuarioMutable().observe(this, new Observer<Usuario>() {
             @Override
             public void onChanged(Usuario usuario) {
                 binding.etNombre.setText(usuario.getNombre());
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        loginViewModel.leerDatos(getIntent());
+        mv.leerDatos(getIntent());
         binding.btnRegistrar.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
