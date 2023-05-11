@@ -39,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
         mv.leerDatos(getIntent());
+
         binding.btnRegistrar.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){

@@ -35,18 +35,15 @@ public class LoginActivityViewModel extends AndroidViewModel {
     public void confirmarLogin(String mail, String clave) {
         if(mail.length() == 0 || clave.length() == 0){
             Toast.makeText(context, "Credenciales erroneas", Toast.LENGTH_SHORT).show();
-            loginSuccess.setValue(false);
         }
         else{
-            Usuario usuario = apiClient.login(context,mail,clave);
-            if(usuario != null){
-                loginSuccess.setValue(usuario != null ? true : false);
-            }
-            else{
+            Usuario usu = apiClient.login(context, mail, clave);
+            if (usu != null) {
+                loginSuccess.setValue(true);
+            } else {
                 Toast.makeText(context, "Credenciales erroneas", Toast.LENGTH_SHORT).show();
             }
         }
-
     }
 
 }

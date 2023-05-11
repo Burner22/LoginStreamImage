@@ -2,57 +2,59 @@ package Request;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import models.Usuario;
 
 public class ApiClient {
 
-    private static SharedPreferences sp;
-
-    private static SharedPreferences conectar(Context context){
-        if(sp == null){
-            sp = context.getSharedPreferences("datos",0);
-        }
-        return sp;
-    }
 
     public static void registrar(Context context, Usuario usuario){
-        SharedPreferences sp = conectar(context);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putLong("dni",usuario.getDni());
-        editor.putString("apellido",usuario.getApellido());
-        editor.putString("nombre",usuario.getNombre());
-        editor.putString("mail",usuario.getMail());
-        editor.putString("clave",usuario.getClave());
-        editor.commit();
+        File archivo = new File(context.getFilesDir(), "personal.dat");
+        try {
+            FileOutputStream fos = new FileOutputStream(archivo, false);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(usuario);
+            oos.flush();
+            oos.close();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public static Usuario leer(Context context){
-        SharedPreferences sp = conectar(context);
-        Long dni = sp.getLong("dni",-1);
-        String apellido = sp.getString("apellido","-1");
-        String nombre = sp.getString("nombre","-1");
-        String mail = sp.getString("mail","-1");
-        String clave = sp.getString("clave","-1");
-
-        Usuario usuario = new Usuario(nombre,apellido,dni,mail,clave);
-
-        return usuario;
+        File archivo = new File(context.getFilesDir(), "personal.dat");
+        if (!archivo.exists()) {
+            return null;
+        }
+        Usuario usuarioRegistrado = null;
+        try {
+            FileInputStream fis = new FileInputStream(archivo);
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            usuarioRegistrado = (Usuario) ois.readObject();
+            ois.close();
+            fis.close();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return usuarioRegistrado;
     }
 
     public static Usuario login(Context context, String mail, String password){
-        Usuario usuarioLogin = null;
-        SharedPreferences sp = conectar(context);
-        Long dniLogin = sp.getLong("dni",-1);
-        String apellidoLogin = sp.getString("apellido","-1");
-        String nombreLogin = sp.getString("nombre","-1");
-        String mailLogin = sp.getString("mail","-1");
-        String claveLogin = sp.getString("clave","-1");
+        Usuario usuarioRegistrado = leer(context);
 
-        if(mail.equals(mailLogin) && password.equals(claveLogin)){
-            usuarioLogin = new Usuario(nombreLogin,apellidoLogin,dniLogin,mailLogin,claveLogin);
+        if (usuarioRegistrado != null && mail.equals(usuarioRegistrado.getMail()) && password.equals(usuarioRegistrado.getClave())) {
+            return usuarioRegistrado;
         }
-        return usuarioLogin;
+        return null;
     }
 
 }
