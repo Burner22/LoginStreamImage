@@ -8,13 +8,23 @@ public class Usuario implements Serializable {
         private long dni;
         private String mail;
         private String clave;
+        private byte[] foto;
 
-        public Usuario(String nombre, String apellido, long dni, String mail, String clave) {
+    public Usuario(String nombre, String apellido, long dni, String mail, String clave) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.dni = dni;
+        this.mail = mail;
+        this.clave = clave;
+    }
+
+    public Usuario(String nombre, String apellido, long dni, String mail, String clave, byte[] foto) {
             this.nombre = nombre;
             this.apellido = apellido;
             this.dni = dni;
             this.mail = mail;
             this.clave = clave;
+            this.foto = foto;
         }
 
         public Usuario(String nombre) {
@@ -60,4 +70,12 @@ public class Usuario implements Serializable {
         public void setClave(String clave) {
             this.clave = clave;
         }
+
+    public byte[] getFoto() {
+        return foto;
+    }
+
+    public void setFoto(byte[] foto) {
+        this.foto = foto;
+    }
 }

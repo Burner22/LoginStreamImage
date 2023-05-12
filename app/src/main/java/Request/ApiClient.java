@@ -30,8 +30,11 @@ public class ApiClient {
         }
     }
 
+
+
     public static Usuario leer(Context context){
         File archivo = new File(context.getFilesDir(), "personal.dat");
+
         if (!archivo.exists()) {
             return null;
         }
